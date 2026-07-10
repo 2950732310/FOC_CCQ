@@ -1,0 +1,214 @@
+{
+	"globsDependent" : 
+	[
+		{
+			"expression" : "C:/Users/ccq/Desktop/FOC_CCQ/App/Src/*.c",
+			"listDirectories" : true,
+			"paths" : 
+			[
+				"C:/Users/ccq/Desktop/FOC_CCQ/App/Src/motor_control.c",
+				"C:/Users/ccq/Desktop/FOC_CCQ/App/Src/serial_control.c"
+			]
+		},
+		{
+			"expression" : "C:/Users/ccq/Desktop/FOC_CCQ/Platform/BSP/Src/*.c",
+			"listDirectories" : true,
+			"paths" : 
+			[
+				"C:/Users/ccq/Desktop/FOC_CCQ/Platform/BSP/Src/dwt.c",
+				"C:/Users/ccq/Desktop/FOC_CCQ/Platform/BSP/Src/mt6816_encoder.c",
+				"C:/Users/ccq/Desktop/FOC_CCQ/Platform/BSP/Src/stmflash.c",
+				"C:/Users/ccq/Desktop/FOC_CCQ/Platform/BSP/Src/usart_printf.c",
+				"C:/Users/ccq/Desktop/FOC_CCQ/Platform/BSP/Src/ws2812.c"
+			]
+		},
+		{
+			"expression" : "C:/Users/ccq/Desktop/FOC_CCQ/Platform/FOC/Src/*.c",
+			"listDirectories" : true,
+			"paths" : 
+			[
+				"C:/Users/ccq/Desktop/FOC_CCQ/Platform/FOC/Src/BLDCMotor.c",
+				"C:/Users/ccq/Desktop/FOC_CCQ/Platform/FOC/Src/FOCMotor.c",
+				"C:/Users/ccq/Desktop/FOC_CCQ/Platform/FOC/Src/pid.c"
+			]
+		}
+	],
+	"inputs" : 
+	[
+		{
+			"path" : "CMakeLists.txt"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "build/Debug/CMakeFiles/4.2.3/CMakeSystem.cmake"
+		},
+		{
+			"path" : "cmake/gcc-arm-none-eabi.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/CMakeSystemSpecificInitialize.cmake"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "build/Debug/CMakeFiles/4.2.3/CMakeCCompiler.cmake"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "build/Debug/CMakeFiles/4.2.3/CMakeCXXCompiler.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/CMakeSystemSpecificInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/CMakeGenericSystem.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/CMakeInitializeConfigs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/Platform/Generic.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/CMakeCInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/CMakeLanguageInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/Compiler/GNU-C.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/Platform/Generic.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/CMakeCommonLanguageInclude.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/Internal/CMakeCLinkerInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/Internal/CMakeCommonLinkerInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/CMakeCXXInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/CMakeLanguageInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/Compiler/GNU-CXX.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/Platform/Generic.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/CMakeCommonLanguageInclude.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/Internal/CMakeCXXLinkerInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/Internal/CMakeCommonLinkerInformation.cmake"
+		},
+		{
+			"isGenerated" : true,
+			"path" : "build/Debug/CMakeFiles/4.2.3/CMakeASMCompiler.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/CMakeASMInformation.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/Compiler/GNU-ASM.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/Compiler/GNU.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/share/cmake-4.2/Modules/Internal/CMakeASMLinkerInformation.cmake"
+		},
+		{
+			"path" : "cmake/stm32cubemx/CMakeLists.txt"
+		},
+		{
+			"path" : "Platform/BSP/CMakeLists.txt"
+		},
+		{
+			"path" : "Platform/FOC/CMakeLists.txt"
+		},
+		{
+			"path" : "App/CMakeLists.txt"
+		}
+	],
+	"kind" : "cmakeFiles",
+	"paths" : 
+	{
+		"build" : "C:/Users/ccq/Desktop/FOC_CCQ/build/Debug",
+		"source" : "C:/Users/ccq/Desktop/FOC_CCQ"
+	},
+	"version" : 
+	{
+		"major" : 1,
+		"minor" : 1
+	}
+}
