@@ -345,4 +345,5 @@ static inline int svm(float alpha, float beta, float *tA, float *tB, float *tC)
   return result_valid ? 0 : -1;
 }
 
+
 #endif // !GENERAL_DEF_H

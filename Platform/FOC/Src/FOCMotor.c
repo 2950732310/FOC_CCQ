@@ -2,7 +2,7 @@
 #include "DWT.h"
 #include "adc.h"
 #include "general_def.h"
-
+#include "algorithm.h"
 
 void FOC_UpdateCurrentSampling(MOTOR_DATA *motor)
 {
@@ -157,15 +157,20 @@ MOTOR_ERROR OpenControlMode(MOTOR_DATA *motor)
     return M_ERR;
 }
 
-int a = 0;
+LPF_Filter_t lpf_filter_iq = {0.0f, 0.0f};
+LPF_Filter_t lpf_filter_id = {0.0f, 0.0f};
 MOTOR_ERROR CurrentControl(MOTOR_DATA *motor)
 {
+    static uint8_t a = 0;
     if (a == 0)
     {
+        /* 初始化低通滤波器 */
+        LPF_Init(&lpf_filter_iq, 0.3f);
+        LPF_Init(&lpf_filter_id, 0.3f);
         /* 初始化电流环q轴PID */
-        PID_Init(&motor->IqPID, PID_POSITION, &motor->foc.flash_data.iq_kp,MAX_V_LIMIT ,MAX_V_LIMIT );
+        PID_Init(&motor->IqPID, PID_POSITION, &motor->foc.flash_data.iq_kp,MAX_V_LIMIT ,MAX_I_LIMIT );
         /* 初始化电流环d轴PID */
-        PID_Init(&motor->IdPID, PID_POSITION, &motor->foc.flash_data.id_kp,MAX_V_LIMIT ,MAX_V_LIMIT);
+        PID_Init(&motor->IdPID, PID_POSITION, &motor->foc.flash_data.id_kp,MAX_V_LIMIT ,MAX_I_LIMIT);
         a = 1;
     }
     
@@ -175,8 +180,12 @@ MOTOR_ERROR CurrentControl(MOTOR_DATA *motor)
     Clarke(&motor->foc);
     Park(&motor->foc);
 
+    /* 低通滤波 */
+    motor->foc.i_q = LPF_Calc(&lpf_filter_iq, motor->foc.i_q);
+    motor->foc.i_d = LPF_Calc(&lpf_filter_id, motor->foc.i_d);
+
     motor->foc.iq_set = CLAMP(motor->foc.iq_set, -MOTOR_IQ_MAX,MOTOR_IQ_MAX);
-    motor->foc.i_q    = CLAMP(motor->foc.i_q, -MOTOR_IQ_MAX,MOTOR_IQ_MAX);
+    // motor->foc.i_q    = CLAMP(motor->foc.i_q, -MOTOR_IQ_MAX,MOTOR_IQ_MAX);
 
     motor->foc.v_q = PID_Calc(&motor->IqPID, motor->foc.i_q, motor->foc.iq_set);
     motor->foc.v_d = PID_Calc(&motor->IdPID, motor->foc.i_d, motor->foc.id_set);

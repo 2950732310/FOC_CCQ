@@ -21,14 +21,14 @@
 #define BATVEL 				12.0f    					       					// 供电电压 V
 #define INVBATVEL 		    (1.0f / BATVEL) 		  			                // 供电电压的倒数
 #define MAX_V_LIMIT		    BATVEL / _SQRT3    				                    // 驱动电压最大限幅 1/根3 倍的母线电压
-
+#define MAX_I_LIMIT		    MAX_V_LIMIT * 0.8f    				                // 驱动电流积分项最大限幅 80% 的最大电压
 
 #define TIMER1_CLK_MHz 168                                                      // 定时器时钟频率
 #define PWM_FREQUENCY 20000                                                     // PWM频率20KHz
 #define PWM_MEASURE_PERIOD (float)(1.0f / (float)PWM_FREQUENCY)                 // PWM周期
 #define CURRENT_MEASURE_HZ PWM_FREQUENCY                                        // 电流频率
 #define CURRENT_MEASURE_PERIOD (float)(1.0f / (float)CURRENT_MEASURE_HZ)        // 电流周期
-#define TS  				0.00005f      				                        // 积分时间步长
+#define TS  				1.0f
 
 #define V_REG 1.65f                                                             // ADC参考电压
 #define CURRENT_SHUNT_RES 0.05f                                                 // 电流采样电阻
@@ -60,10 +60,19 @@
 #define MOTOR_NOM_CURRENT   0.9f                                // 额定电流（A）
 #define MOTOR_TORQUE_LIMIT  0.23f                               // 额定转矩（Nm）
 #define MOTOR_TORQUE_K      0.132f                              // 转矩常数（Nm/A）
-#define MOTOR_IQ_MAX        MOTOR_TORQUE_LIMIT / MOTOR_TORQUE_K // 最大电流（A）
+#define MOTOR_IQ_MAX        1.0f                                // 最大电流（A）
 #define MOTOR_FLUX          0.0f                                // 磁链
 #define MOTOR_DIRECTION     CCW                                 // 电机方向 (CCW: 逆时针)方向在电角度零点校准之后不可更改如需更改需重新校准电角度
 #define MAX_VOLTAGE         2.5f                                // 电角度零点对齐的最大电压 V（与电机相电阻有关系）
+#define MAX_VEL_LIMIT       25.0f                               // 速度环最大限幅 25圈/秒
+#define IQ_KP               29.0f                               // q轴电流环比例系数
+#define IQ_KI               800.0f                              // d轴电流环积分系数
+#define IQ_KD               0.0f                                // d轴电流环微分系数
+#define ID_KP               30.0f                               // d轴电流环比例系数
+#define ID_KI               1500.0f                             // d轴电流环积分系数
+#define ID_KD               0.0f                                // d轴电流环微分系数
+
+
 #endif
 
 // 扇区枚举

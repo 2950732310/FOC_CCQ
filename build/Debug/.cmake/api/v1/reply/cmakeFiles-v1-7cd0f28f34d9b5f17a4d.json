@@ -29,6 +29,7 @@
 			[
 				"C:/Users/ccq/Desktop/FOC_CCQ/Platform/FOC/Src/BLDCMotor.c",
 				"C:/Users/ccq/Desktop/FOC_CCQ/Platform/FOC/Src/FOCMotor.c",
+				"C:/Users/ccq/Desktop/FOC_CCQ/Platform/FOC/Src/algorithm.c",
 				"C:/Users/ccq/Desktop/FOC_CCQ/Platform/FOC/Src/pid.c"
 			]
 		}

@@ -3,6 +3,10 @@
 
 #include "general_def.h" // 包含通用定义的头文件
 
+
+#define I_TS  				0.00005f      				                        // 积分时间步长
+
+
 enum PID_MODE
 {
   PID_POSITION = 0, // 位置式

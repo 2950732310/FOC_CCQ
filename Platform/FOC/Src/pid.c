@@ -61,7 +61,7 @@ float PID_Calc(PidTypeDef *pid, float ref, float set)
     if (pid->mode == PID_POSITION)
     {
         pid->Pout = pid->Kp * pid->error[0];
-        pid->Iout += pid->Ki * pid->error[0] * TS;
+        pid->Iout += pid->Ki * pid->error[0] * I_TS;
         pid->Dbuf[2] = pid->Dbuf[1];
         pid->Dbuf[1] = pid->Dbuf[0];
         pid->Dbuf[0] = (pid->error[0] - pid->error[1]);

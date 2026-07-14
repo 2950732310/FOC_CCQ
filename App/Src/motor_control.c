@@ -16,8 +16,8 @@ MOTOR_DATA motor = {
               .ia_zero = 0.0f,
               .ib_zero = 0.0f,
               .ic_zero = 0.0f,
-              .iq_kp   = 1.0f,
-              .iq_ki   = 0.5f,
+              .iq_kp   = 0.0f,
+              .iq_ki   = 0.0f,
               .iq_kd   = 0.0f,
               .id_kp   = 0.0f,
               .id_ki   = 0.0f,
@@ -35,7 +35,7 @@ MOTOR_DATA motor = {
             .vd_set      = 0.0f,
             .vq_set      = -3.0f,
             .id_set      = 0.0f,
-            .iq_set      = 1.0f
+            .iq_set      = 0.5f
         },
     .mt6816 = &encoder_data,
     .IqPID                      = {
@@ -55,6 +55,15 @@ MOTOR_DATA motor = {
         .Kd                     = 0,
         .max_out                = MAX_V_LIMIT,
         .max_iout               = MAX_V_LIMIT,
+    },
+    .VelPID                     = {
+        // 速度环参数
+        .mode                   = PID_POSITION,
+        .Kp                     = 0,
+        .Ki                     = 0,
+        .Kd                     = 0,
+        .max_out                = MOTOR_IQ_MAX,
+        .max_iout               = MOTOR_IQ_MAX,
     },
 };
 
@@ -97,7 +106,9 @@ void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef *hadc)
                 // UART_Printf_DMA("%f,%f,%f\r\n", motor.foc.theta, motor.foc.v_alpha, motor.foc.v_beta);
                 // UART_Printf_DMA("%f,%f,%f\r\n", motor.foc.dtc_a, motor.foc.dtc_b, motor.foc.dtc_c);
                 // UART_Printf_DMA("%f,%f,%f\r\n", motor.foc.i_a, motor.foc.i_b, motor.foc.i_c);
-                UART_Printf_DMA("%f,%f\r\n", motor.foc.v_q, motor.foc.i_q);
+                // UART_Printf_DMA("%f,%f,%f\r\n", motor.foc.v_q, motor.foc.iq_set, motor.foc.i_q);
+                // UART_Printf_DMA("%f,%f,%f\r\n", motor.foc.v_d, motor.foc.id_set, motor.foc.i_d);
+                // UART_Printf_DMA("%f\r\n", motor.mt6816->speed);
                 i = 0;
             }
             break;

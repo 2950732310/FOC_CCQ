@@ -23,13 +23,18 @@ CommandFlag_t command_flag = {0}; // 命令交互结构体
 static const ParamDef_t g_param_table[] =
 {
     /* ---- 可读写参数 ---- */
+    { "reset",          PARAM_TYPE_INT,   &command_flag.reset,               "",    "[R/W]1:恢复出厂设置"},
+    { "flash_control",  PARAM_TYPE_INT,   &command_flag.flash_control,       "",    "[R/W]1:Flash存储"},
     { "current_zero",   PARAM_TYPE_INT,   &command_flag.current_zero,        "",    "[R/W]1:电流环0点标定" },
     { "vq_set",         PARAM_TYPE_FLOAT, &motor.foc.vq_set,                 "",    "[R/W]1:q轴电压设置" },
     { "iq_set",         PARAM_TYPE_FLOAT, &motor.foc.iq_set,                 "",    "[R/W]1:iq轴电流设置" },
     { "id_set",         PARAM_TYPE_FLOAT, &motor.foc.id_set,                 "",    "[R/W]1:d轴电压设置" },
-    { "iq_kp",          PARAM_TYPE_FLOAT, &motor.IqPID.Kp,          "",    "[R/W]1:iq轴P参数" },
-    { "iq_ki",          PARAM_TYPE_FLOAT, &motor.IqPID.Ki,          "",    "[R/W]1:iq轴I参数" },
+    { "iq_kp",          PARAM_TYPE_FLOAT, &motor.foc.flash_data.iq_kp,       "",    "[R/W]1:iq轴P参数" },
+    { "iq_ki",          PARAM_TYPE_FLOAT, &motor.foc.flash_data.iq_ki,       "",    "[R/W]1:iq轴I参数" },
+    { "id_kp",          PARAM_TYPE_FLOAT, &motor.foc.flash_data.id_kp,       "",    "[R/W]1:d轴P参数" },
+    { "id_ki",          PARAM_TYPE_FLOAT, &motor.foc.flash_data.id_ki,       "",    "[R/W]1:d轴I参数" },
     /* ---- 只读参数 ---- */
+    { "speed",          PARAM_TYPE_FLOAT,&encoder_data.vel_estimate_,       "",    "[R]速度(圈/秒)"  },
 };
 
 #define PARAM_TABLE_SIZE (sizeof(g_param_table) / sizeof(g_param_table[0]))

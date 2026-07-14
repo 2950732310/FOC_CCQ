@@ -629,6 +629,16 @@ build Platform/FOC/CMakeFiles/foc_lib.dir/Src/FOCMotor.c.obj: C_COMPILER__foc_li
   OBJECT_FILE_DIR = Platform\FOC\CMakeFiles\foc_lib.dir\Src
   TARGET_SUPPORT_DIR = Platform\FOC\CMakeFiles\foc_lib.dir
 
+build Platform/FOC/CMakeFiles/foc_lib.dir/Src/algorithm.c.obj: C_COMPILER__foc_lib_unscanned_Debug C$:/Users/ccq/Desktop/FOC_CCQ/Platform/FOC/Src/algorithm.c || cmake_object_order_depends_target_foc_lib
+  CONFIG = Debug
+  DEFINES = -DDEBUG -DSTM32G431xx -DUSE_HAL_DRIVER
+  DEP_FILE = Platform\FOC\CMakeFiles\foc_lib.dir\Src\algorithm.c.obj.d
+  FLAGS = -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -fdata-sections -ffunction-sections -fstack-usage -O0 -g3 -std=gnu11 -fPIC
+  INCLUDES = -IC:/Users/ccq/Desktop/FOC_CCQ/Platform/FOC/Inc -IC:/Users/ccq/Desktop/FOC_CCQ/cmake/stm32cubemx/../../Core/Inc -IC:/Users/ccq/Desktop/FOC_CCQ/cmake/stm32cubemx/../../Drivers/STM32G4xx_HAL_Driver/Inc -IC:/Users/ccq/Desktop/FOC_CCQ/cmake/stm32cubemx/../../Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/Users/ccq/Desktop/FOC_CCQ/cmake/stm32cubemx/../../Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/Users/ccq/Desktop/FOC_CCQ/cmake/stm32cubemx/../../Drivers/CMSIS/Include -IC:/Users/ccq/Desktop/FOC_CCQ/cmake/stm32cubemx/../../Middlewares/ST/CMSIS/DSP/Include -IC:/Users/ccq/Desktop/FOC_CCQ/Platform/BSP/Inc -IC:/Users/ccq/Desktop/FOC_CCQ/App/Inc
+  OBJECT_DIR = Platform\FOC\CMakeFiles\foc_lib.dir
+  OBJECT_FILE_DIR = Platform\FOC\CMakeFiles\foc_lib.dir\Src
+  TARGET_SUPPORT_DIR = Platform\FOC\CMakeFiles\foc_lib.dir
+
 build Platform/FOC/CMakeFiles/foc_lib.dir/Src/pid.c.obj: C_COMPILER__foc_lib_unscanned_Debug C$:/Users/ccq/Desktop/FOC_CCQ/Platform/FOC/Src/pid.c || cmake_object_order_depends_target_foc_lib
   CONFIG = Debug
   DEFINES = -DDEBUG -DSTM32G431xx -DUSE_HAL_DRIVER
@@ -647,7 +657,7 @@ build Platform/FOC/CMakeFiles/foc_lib.dir/Src/pid.c.obj: C_COMPILER__foc_lib_uns
 #############################################
 # Link the static library Platform\FOC\libfoc_lib.a
 
-build Platform/FOC/libfoc_lib.a: C_STATIC_LIBRARY_LINKER__foc_lib_Debug Platform/FOC/CMakeFiles/foc_lib.dir/Src/BLDCMotor.c.obj Platform/FOC/CMakeFiles/foc_lib.dir/Src/FOCMotor.c.obj Platform/FOC/CMakeFiles/foc_lib.dir/Src/pid.c.obj || App/libapp_lib.a
+build Platform/FOC/libfoc_lib.a: C_STATIC_LIBRARY_LINKER__foc_lib_Debug Platform/FOC/CMakeFiles/foc_lib.dir/Src/BLDCMotor.c.obj Platform/FOC/CMakeFiles/foc_lib.dir/Src/FOCMotor.c.obj Platform/FOC/CMakeFiles/foc_lib.dir/Src/algorithm.c.obj Platform/FOC/CMakeFiles/foc_lib.dir/Src/pid.c.obj || App/libapp_lib.a
   CONFIG = Debug
   LANGUAGE_COMPILE_FLAGS = -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -fdata-sections -ffunction-sections -fstack-usage -O0 -g3
   OBJECT_DIR = Platform\FOC\CMakeFiles\foc_lib.dir

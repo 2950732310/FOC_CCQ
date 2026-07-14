@@ -63,6 +63,7 @@ file(GLOB NEW_GLOB LIST_DIRECTORIES true "C:/Users/ccq/Desktop/FOC_CCQ/Platform/
 set(OLD_GLOB
   "C:/Users/ccq/Desktop/FOC_CCQ/Platform/FOC/Src/BLDCMotor.c"
   "C:/Users/ccq/Desktop/FOC_CCQ/Platform/FOC/Src/FOCMotor.c"
+  "C:/Users/ccq/Desktop/FOC_CCQ/Platform/FOC/Src/algorithm.c"
   "C:/Users/ccq/Desktop/FOC_CCQ/Platform/FOC/Src/pid.c"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")

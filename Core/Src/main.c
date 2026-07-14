@@ -146,6 +146,13 @@ int main(void)
     /* 每 1 s 执行一次 */
     if ((state_i % 100U) == 0U)
     {
+      /* 检查是否需要写入FLASH */
+      if (command_flag.flash_control == 1)
+      {
+        stmflash_write(FLASH_ADDR, (uint32_t *)&motor.foc.flash_data, sizeof(motor.foc.flash_data)/4);
+        command_flag.flash_control = 0;
+      }
+      
       RGB_ToggleGreen();
       state_i = 0U;
     }
@@ -207,12 +214,12 @@ void flash_init(void)
   {
     // 首次运行，初始化flash数据
     motor.foc.flash_data.version = 260710100;
-    motor.foc.flash_data.iq_kp = 0.0f;
-    motor.foc.flash_data.iq_ki = 0.0f;
-    motor.foc.flash_data.iq_kd = 0.0f;
-    motor.foc.flash_data.id_kp = 0.0f;
-    motor.foc.flash_data.id_ki = 0.0f;
-    motor.foc.flash_data.id_kd = 0.0f;
+    motor.foc.flash_data.iq_kp = IQ_KP;
+    motor.foc.flash_data.iq_ki = IQ_KI;
+    motor.foc.flash_data.iq_kd = IQ_KD;
+    motor.foc.flash_data.id_kp = ID_KP;
+    motor.foc.flash_data.id_ki = ID_KI;
+    motor.foc.flash_data.id_kd = ID_KD;
     motor.foc.flash_data.vel_kp = 0.0f;
     motor.foc.flash_data.vel_ki = 0.0f;
     motor.foc.flash_data.vel_kd = 0.0f;
