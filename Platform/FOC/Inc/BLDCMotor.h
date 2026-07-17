@@ -64,14 +64,17 @@
 #define MOTOR_FLUX          0.0f                                // 磁链
 #define MOTOR_DIRECTION     CCW                                 // 电机方向 (CCW: 逆时针)方向在电角度零点校准之后不可更改如需更改需重新校准电角度
 #define MAX_VOLTAGE         2.5f                                // 电角度零点对齐的最大电压 V（与电机相电阻有关系）
-#define MAX_VEL_LIMIT       25.0f                               // 速度环最大限幅 25圈/秒
-#define IQ_KP               29.0f                               // q轴电流环比例系数
-#define IQ_KI               800.0f                              // d轴电流环积分系数
+#define MAX_VEL_LIMIT       20.0f                               // 速度环最大限幅 rad/s
+#define MAX_POS_LIMIT       360.0f                              // 位置环最大限幅 °
+#define IQ_KP               0.0f                               // q轴电流环比例系数
+#define IQ_KI               0.0f                              // d轴电流环积分系数
 #define IQ_KD               0.0f                                // d轴电流环微分系数
-#define ID_KP               30.0f                               // d轴电流环比例系数
-#define ID_KI               1500.0f                             // d轴电流环积分系数
+#define ID_KP               0.0f                               // d轴电流环比例系数
+#define ID_KI               0.0f                             // d轴电流环积分系数
 #define ID_KD               0.0f                                // d轴电流环微分系数
-
+#define VEL_KP              0.0f                               // 速度环比例系数
+#define VEL_KI              0.0f                             // 速度环积分系数
+#define VEL_KD              0.0f                                // 速度环微分系数
 
 #endif
 
@@ -104,9 +107,9 @@ typedef struct
   float vel_kp;                  // 速度环比例系数
   float vel_ki;                  // 速度环积分系数
   float vel_kd;                  // 速度环微分系数
-  float theta_kp;                // 角度环比例系数
-  float theta_ki;                // 角度环积分系数
-  float theta_kd;                // 角度环微分系数
+  float pos_kp;                  // 位置环比例系数
+  float pos_ki;                  // 位置环积分系数
+  float pos_kd;                  // 位置环微分系数
 }flash_data_t;
 
 
@@ -157,8 +160,12 @@ typedef struct
 	float Ualpha_norm;		// α轴电压/母线电压
 	float Ubeta_norm;		// β轴电压/母线电压
 
-    // float vel_ref;          // 速度参考值 (rad/s)
-    // float vel_fb;           // 速度反馈值 (rad/s)
+    float vel_set;          // 速度参考值 (rad/s)
+    float vel_fb;           // 速度反馈值 (rad/s)
+
+    float pos_set;          // 位置参考值 (°)
+    float pos_fb;           // 位置反馈值 (°)
+   
 
 
 }FOC_DATA;

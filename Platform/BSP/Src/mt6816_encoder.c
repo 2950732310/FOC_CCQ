@@ -25,7 +25,7 @@ ENCODER_DATA encoder_data = {
     .vel_estimate_counts_ = 0.0f,                 // 原始值转速
     .pos_cpr_counts_      = 0.0f,                 // 原始值（浮点型）
     .pos_estimate_        = 0.0f,                 // 圈数
-    .vel_estimate_        = 0.0f,                 // 加速度 圈/秒
+    .vel_estimate_        = 0.0f,                 // 加速度 rad/s
     .pos_cpr_             = 0.0f,                 // 0-1
     .phase_               = 0.0f,                 // 电角度
     .interpolation_       = 0.0f,                 // 插值系数
@@ -185,7 +185,7 @@ void GetMotor_Angle(ENCODER_DATA *encoder)
     encoder->count_in_cpr_ += delta_enc;
     encoder->count_in_cpr_  = mod(encoder->count_in_cpr_, ENCODER_CPR);
 
-    encoder->count_in_cpr_  = encoder->cnt;
+    // encoder->count_in_cpr_  = encoder->cnt;
 
     //// run pll (for now pll is in units of encoder counts)
     // Predict current pos

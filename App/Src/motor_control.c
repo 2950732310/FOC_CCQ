@@ -4,13 +4,13 @@
 #include "stm32g431xx.h"
 #include "usart_printf.h"
 #include "DWT.h"
-
+#include "algorithm.h"
 
 
 /* 电机结构体初始化 */
 MOTOR_DATA motor = {
     .State_Mode = STATE_MODE_RUNNING,
-    .Control_Mode = CONTROL_MODE_TORQUE,
+    .Control_Mode = CONTROL_MODE_VELOCITY,
     .foc ={
             .flash_data = {
               .ia_zero = 0.0f,
@@ -25,17 +25,19 @@ MOTOR_DATA motor = {
               .vel_kp  = 0.0f,
               .vel_ki  = 0.0f,
               .vel_kd  = 0.0f,
-              .theta_kp = 0.0f,
-              .theta_ki = 0.0f,
-              .theta_kd = 0.0f,
+              .pos_kp  = 0.0f,
+              .pos_ki  = 0.0f,
+              .pos_kd  = 0.0f,
             },
             .vbus        = BATVEL,
             .inv_vbus    = INVBATVEL,
             .theta       = 0.0f,
             .vd_set      = 0.0f,
-            .vq_set      = -3.0f,
+            .vq_set      = 3.0f,
             .id_set      = 0.0f,
-            .iq_set      = 0.5f
+            .iq_set      = 0.5f,
+            .vel_set     = 10.0f,
+            .pos_set     = 90.0f,
         },
     .mt6816 = &encoder_data,
     .IqPID                      = {
@@ -64,6 +66,15 @@ MOTOR_DATA motor = {
         .Kd                     = 0,
         .max_out                = MOTOR_IQ_MAX,
         .max_iout               = MOTOR_IQ_MAX,
+    },
+    .PosPID                     = {
+        // 位置环参数
+        .mode                   = PID_POSITION,
+        .Kp                     = 0,
+        .Ki                     = 0,
+        .Kd                     = 0,
+        .max_out                = MAX_VEL_LIMIT,
+        .max_iout               = MAX_VEL_LIMIT,
     },
 };
 
@@ -94,8 +105,10 @@ void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef *hadc)
                     CurrentControl(&motor);
                     break;
                 case CONTROL_MODE_VELOCITY:
+                    VelocityControl(&motor);
                     break;
                 case CONTROL_MODE_POSITION:
+                    PositionControl(&motor);
                     break;
                 default:
                     break;
@@ -108,7 +121,8 @@ void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef *hadc)
                 // UART_Printf_DMA("%f,%f,%f\r\n", motor.foc.i_a, motor.foc.i_b, motor.foc.i_c);
                 // UART_Printf_DMA("%f,%f,%f\r\n", motor.foc.v_q, motor.foc.iq_set, motor.foc.i_q);
                 // UART_Printf_DMA("%f,%f,%f\r\n", motor.foc.v_d, motor.foc.id_set, motor.foc.i_d);
-                // UART_Printf_DMA("%f\r\n", motor.mt6816->speed);
+                UART_Printf_DMA("%f,%f,%f\r\n", motor.foc.iq_set,motor.foc.vel_set,motor.mt6816->vel_estimate_);
+                // UART_Printf_DMA("%f,%f,%f\r\n", motor.foc.pos_fb,motor.foc.pos_set,motor.foc.vel_set);
                 i = 0;
             }
             break;
@@ -123,6 +137,7 @@ void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef *hadc)
 void Motor_StartControl(void)
 {
     Foc_Pwm_Start();
+    DWT_Delay_ms(100);
     /*第一次启动时对齐*/
     if(motor.foc.flash_data.first_run != 0)
     {
@@ -137,8 +152,8 @@ void Motor_StartControl(void)
     if(motor.foc.flash_data.first_run != 0)
     {
         FOC_CurrentOffsetCalibration(&motor);
+        DWT_Delay_ms(1000);
     }
-    
 }
 
 

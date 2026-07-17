@@ -146,8 +146,15 @@ int main(void)
     /* 每 1 s 执行一次 */
     if ((state_i % 100U) == 0U)
     {
+      /* 回复出厂设置 */
+      if(command_flag.reset != 0)
+      {
+        motor.foc.flash_data.first_run = 1;
+        stmflash_write(FLASH_ADDR, (uint32_t *)&motor.foc.flash_data, sizeof(motor.foc.flash_data)/4);
+      }
+
       /* 检查是否需要写入FLASH */
-      if (command_flag.flash_control == 1)
+      if (command_flag.flash_control != 0)
       {
         stmflash_write(FLASH_ADDR, (uint32_t *)&motor.foc.flash_data, sizeof(motor.foc.flash_data)/4);
         command_flag.flash_control = 0;
@@ -220,12 +227,12 @@ void flash_init(void)
     motor.foc.flash_data.id_kp = ID_KP;
     motor.foc.flash_data.id_ki = ID_KI;
     motor.foc.flash_data.id_kd = ID_KD;
-    motor.foc.flash_data.vel_kp = 0.0f;
-    motor.foc.flash_data.vel_ki = 0.0f;
-    motor.foc.flash_data.vel_kd = 0.0f;
-    motor.foc.flash_data.theta_kp = 0.0f;
-    motor.foc.flash_data.theta_ki = 0.0f;
-    motor.foc.flash_data.theta_kd = 0.0f;
+    motor.foc.flash_data.vel_kp = VEL_KP;
+    motor.foc.flash_data.vel_ki = VEL_KI;
+    motor.foc.flash_data.vel_kd = VEL_KD;
+    motor.foc.flash_data.pos_kp = 0.0f;
+    motor.foc.flash_data.pos_ki = 0.0f;
+    motor.foc.flash_data.pos_kd = 0.0f;
   }
 }
 /* USER CODE END 4 */

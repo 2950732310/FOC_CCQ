@@ -41,5 +41,21 @@ MOTOR_ERROR OpenControlMode(MOTOR_DATA *motor);
  * @retval MOTOR_ERROR_INVALID_PARAM: 参数错误
  */
 MOTOR_ERROR CurrentControl(MOTOR_DATA *motor);
+
+
+/**
+ * @brief  速度控制
+ * @param  motor: 电机数据结构体指针
+ * @retval MOTOR_ERROR_OK: 速度控制成功
+ * @retval MOTOR_ERROR_INVALID_PARAM: 参数错误
+ */
+MOTOR_ERROR VelocityControl(MOTOR_DATA *motor);
 #endif
 
+/**
+ * @brief  位置控制
+ * @param  motor: 电机数据结构体指针
+ * @retval MOTOR_ERROR_OK: 位置控制成功
+ * @retval MOTOR_ERROR_INVALID_PARAM: 参数错误
+ */
+MOTOR_ERROR PositionControl(MOTOR_DATA *motor);

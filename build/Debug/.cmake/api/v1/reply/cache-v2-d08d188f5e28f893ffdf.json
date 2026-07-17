@@ -223,11 +223,11 @@
 			[
 				{
 					"name" : "HELPSTRING",
-					"value" : "Path to CMake executable."
+					"value" : "No help, variable specified on the command line."
 				}
 			],
-			"type" : "INTERNAL",
-			"value" : "C:/Users/ccq/AppData/Local/stm32cube/bundles/cmake/4.2.3+st.1/bin/cmake.exe"
+			"type" : "UNINITIALIZED",
+			"value" : "cube-cmake"
 		},
 		{
 			"name" : "CMAKE_CPACK_COMMAND",
@@ -1219,10 +1219,10 @@
 			[
 				{
 					"name" : "HELPSTRING",
-					"value" : "The CMake toolchain file"
+					"value" : "No help, variable specified on the command line."
 				}
 			],
-			"type" : "FILEPATH",
+			"type" : "UNINITIALIZED",
 			"value" : "C:/Users/ccq/Desktop/FOC_CCQ/cmake/gcc-arm-none-eabi.cmake"
 		},
 		{
