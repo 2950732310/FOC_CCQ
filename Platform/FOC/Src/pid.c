@@ -46,7 +46,7 @@ void PID_Init(PidTypeDef *pid, uint8_t mode, const float PID[3], float max_out, 
  * @param[in]      set: 设定值
  * @retval         PID输出值
  */
-float PID_Calc(PidTypeDef *pid, float ref, float set)
+float PID_Calc(PidTypeDef *pid, float ref, float set ,float I_TS)
 {
     if (pid == NULL)
     {

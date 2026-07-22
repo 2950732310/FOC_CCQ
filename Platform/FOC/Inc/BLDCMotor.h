@@ -20,8 +20,6 @@
 /* 通用参数配置 */
 #define BATVEL 				12.0f    					       					// 供电电压 V
 #define INVBATVEL 		    (1.0f / BATVEL) 		  			                // 供电电压的倒数
-#define MAX_V_LIMIT		    BATVEL / _SQRT3    				                    // 驱动电压最大限幅 1/根3 倍的母线电压
-#define MAX_I_LIMIT		    MAX_V_LIMIT * 0.8f    				                // 驱动电流积分项最大限幅 80% 的最大电压
 
 #define TIMER1_CLK_MHz 168                                                      // 定时器时钟频率
 #define PWM_FREQUENCY 20000                                                     // PWM频率20KHz
@@ -44,17 +42,34 @@
 #define MPTOR_P             7u                  // 电机极对数
 #define MOTOR_RS            0.0995f             // 相电阻（Ω）
 #define MOTOR_LS            0.00001822f         // 相电感（H）
-#define MOTOR_NOM_CURRENT   0.0f                // 额定电流（A）
-#define MOTOR_TORQUE_LIMIT  0.0f               // 额定转矩（Nm）
-#define MOTOR_TORQUE_K      0.0f               // 转矩常数（Nm/A）
+#define MOTOR_NOM_CURRENT   1.0f                // 额定电流（A）
+#define MOTOR_TORQUE_LIMIT  0.0f                // 额定转矩（Nm）
+#define MOTOR_TORQUE_K      0.0f                // 转矩常数（Nm/A）
+#define MOTOR_IQ_MAX        1.0f                // 最大电流（A）
 #define MOTOR_FLUX          0.0f                // 磁链
 #define MOTOR_DIRECTION     CCW                 // 电机方向 (CCW: 逆时针)方向在电角度零点校准之后不可更改如需更改需重新校准电角度
 #define MAX_VOLTAGE         0.5f                // 电角度零点对齐的最大电压 V（与电机相电阻有关系）
+#define MAX_VEL_LIMIT       50.0f               // 速度环最大限幅 rev/s
+#define MAX_POS_LIMIT       360.0f              // 位置环最大限幅 
+#define TRAPEZOID_VEL       15000.0f            // 梯型加减速最大速度 (°/s) */
+#define TRAPEZOID_ACC       40000.0f            // 梯型加减速最大加速度 (°/s²) */
+#define MAX_V_LIMIT		    2.5f  				// 驱动电压最大限幅 
+#define MAX_I_LIMIT		    MAX_V_LIMIT * 0.8f  // 驱动电流积分项最大限幅 80% 的最大电压
+#define IQ_KP               0.7f                // q轴电流环比例系数
+#define IQ_KI               80.0f               // d轴电流环积分系数
+#define IQ_KD               0.0f                // d轴电流环微分系数
+#define ID_KP               0.1f                // d轴电流环比例系数
+#define ID_KI               25.0f               // d轴电流环积分系数
+#define ID_KD               0.0f                // d轴电流环微分系数
+#define VEL_KP              0.1f                // 速度环比例系数
+#define VEL_KI              0.7f                // 速度环积分系数
+#define VEL_KD              0.0f                // 速度环微分系数
+#define POS_KP              0.8f                // 位置环比例系数
 #endif
 
 /* 电机实际参数 */
 #if MOTOR_4310
-#define MPTOR_P             11u                                  // 电机极对数
+#define MPTOR_P             11u                                 // 电机极对数
 #define MOTOR_RS            4.835f                              // 相电阻（Ω）
 #define MOTOR_LS            0.00123816666666f                   // 相电感（H）
 #define MOTOR_NOM_CURRENT   0.9f                                // 额定电流（A）
@@ -64,17 +79,23 @@
 #define MOTOR_FLUX          0.0f                                // 磁链
 #define MOTOR_DIRECTION     CCW                                 // 电机方向 (CCW: 逆时针)方向在电角度零点校准之后不可更改如需更改需重新校准电角度
 #define MAX_VOLTAGE         2.5f                                // 电角度零点对齐的最大电压 V（与电机相电阻有关系）
-#define MAX_VEL_LIMIT       20.0f                               // 速度环最大限幅 rad/s
+#define MAX_VEL_LIMIT       20.0f                               // 速度环最大限幅 rev/s
 #define MAX_POS_LIMIT       360.0f                              // 位置环最大限幅 °
-#define IQ_KP               0.0f                               // q轴电流环比例系数
-#define IQ_KI               0.0f                              // d轴电流环积分系数
+#define TRAPEZOID_VEL       7000.0f                             // 梯型加减速最大速度 (°/s) */
+#define TRAPEZOID_ACC       20000.0f                            // 梯型加减速最大加速度 (°/s²) */
+#define MAX_V_LIMIT		    BATVEL / _SQRT3    				    // 驱动电压最大限幅 1/根3 倍的母线电压
+#define MAX_I_LIMIT		    MAX_V_LIMIT * 0.8f    				// 驱动电流积分项最大限幅 80% 的最大电压
+#define IQ_KP               10.0f                               // q轴电流环比例系数
+#define IQ_KI               40.0f                               // d轴电流环积分系数
 #define IQ_KD               0.0f                                // d轴电流环微分系数
-#define ID_KP               0.0f                               // d轴电流环比例系数
-#define ID_KI               0.0f                             // d轴电流环积分系数
+#define ID_KP               0.1f                                // d轴电流环比例系数
+#define ID_KI               25.0f                               // d轴电流环积分系数
 #define ID_KD               0.0f                                // d轴电流环微分系数
-#define VEL_KP              0.0f                               // 速度环比例系数
-#define VEL_KI              0.0f                             // 速度环积分系数
+#define VEL_KP              0.1f                               // 速度环比例系数
+#define VEL_KI              0.05f                                // 速度环积分系数
 #define VEL_KD              0.0f                                // 速度环微分系数
+#define POS_KP              0.95f                                // 位置环比例系数
+
 
 #endif
 
@@ -165,6 +186,7 @@ typedef struct
 
     float pos_set;          // 位置参考值 (°)
     float pos_fb;           // 位置反馈值 (°)
+    float pos_ref;          // 梯度控制目标位置
    
 
 

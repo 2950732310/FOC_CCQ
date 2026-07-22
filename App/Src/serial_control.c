@@ -26,18 +26,21 @@ static const ParamDef_t g_param_table[] =
     { "reset",          PARAM_TYPE_INT,   &command_flag.reset,               "",    "[R/W]1:恢复出厂设置"},
     { "flash_control",  PARAM_TYPE_INT,   &command_flag.flash_control,       "",    "[R/W]1:Flash存储"},
     { "current_zero",   PARAM_TYPE_INT,   &command_flag.current_zero,        "",    "[R/W]1:电流环0点标定" },
+    { "state_mode",     PARAM_TYPE_INT,   &motor.State_Mode,                 "",    "[R/W]0:空闲模式, 1:检测模式 2:运行模式"},
+    { "control_mode",   PARAM_TYPE_INT,   &motor.Control_Mode,               "",    "[R/W]0:开环,1:力矩,2:速度,3:位置,4:梯度位置"},
     { "vq_set",         PARAM_TYPE_FLOAT, &motor.foc.vq_set,                 "",    "[R/W]q轴电压设置" },
     { "iq_set",         PARAM_TYPE_FLOAT, &motor.foc.iq_set,                 "",    "[R/W]q轴电流设置" },
     { "id_set",         PARAM_TYPE_FLOAT, &motor.foc.id_set,                 "",    "[R/W]d轴电压设置" },
     { "vel_set",        PARAM_TYPE_FLOAT, &motor.foc.vel_set,                "",    "[R/W]速度设置" },
     { "pos_set",        PARAM_TYPE_FLOAT, &motor.foc.pos_set,                "",    "[R/W]位置设置" },
-    { "iq_kp",          PARAM_TYPE_FLOAT, &motor.IqPID.Kp,       "",    "[R/W]q轴P参数" },
-    { "iq_ki",          PARAM_TYPE_FLOAT, &motor.IqPID.Ki,       "",    "[R/W]q轴I参数" },
+    { "pos_ref",       PARAM_TYPE_FLOAT, &motor.foc.pos_ref,                "",    "[R/W]梯形加减速下的位置设置" },
+    { "iq_kp",         PARAM_TYPE_FLOAT, &motor.IqPID.Kp,       "",    "[R/W]q轴P参数" },
+    { "iq_ki",         PARAM_TYPE_FLOAT, &motor.IqPID.Ki,       "",    "[R/W]q轴I参数" },
     { "id_kp",         PARAM_TYPE_FLOAT, &motor.IdPID.Kp,       "",    "[R/W]d轴P参数" },
     { "id_ki",         PARAM_TYPE_FLOAT, &motor.IdPID.Ki,       "",    "[R/W]d轴I参数" },
     { "vel_kp",        PARAM_TYPE_FLOAT, &motor.VelPID.Kp,      "",    "[R/W]速度P参数" },
     { "vel_ki",        PARAM_TYPE_FLOAT, &motor.VelPID.Ki,      "",    "[R/W]速度I参数" },
-    { "pos_kp",        PARAM_TYPE_FLOAT, &motor.foc.flash_data.pos_kp,      "",    "[R/W]位置P参数" },
+    { "pos_kp",        PARAM_TYPE_FLOAT, &motor.PosPID.Kp,      "",    "[R/W]位置P参数" },
 
     /* ---- 只读参数 ---- */
     { "speed",          PARAM_TYPE_FLOAT,&encoder_data.vel_estimate_,       "",    "[R]速度(圈/秒)"  },
@@ -235,6 +238,20 @@ static void Cmd_Get(const char *param_name)
         return;
     }
 
+    /*
+     * 特殊处理：state_mode / control_mode 为短枚举（1字节），
+     * 直接通过 int* 读取会多读 3 字节（污染相邻字段），
+     * 这里用 uint8_t* 只读 1 字节。
+     */
+    if (strcmp(param_name, "state_mode") == 0 ||
+        strcmp(param_name, "control_mode") == 0)
+    {
+        val = (float)(*(uint8_t *)param->var);
+        FloatToStr(val, str_val, 0);
+        UART_Response_DMA("$%s=%s", param_name, str_val);
+        return;
+    }
+
     if (Param_ReadFloat(param, &val) == 0)
     {
         FloatToStr(val, str_val, 4);
@@ -266,20 +283,22 @@ static void Cmd_Set(const char *param_name, const char *value_str)
     /* 字符串转float */
     val = atof(value_str);
 
+    /*
+     * 特殊处理：state_mode / control_mode 为短枚举（1字节），
+     * 不能用 PARAM_TYPE_INT 的 int*（4字节）写入，否则会覆盖
+     * 相邻字段。这里用 uint8_t* 只写 1 字节。
+     */
+    if (strcmp(param_name, "state_mode") == 0 ||
+        strcmp(param_name, "control_mode") == 0)
+    {
+        *(uint8_t *)param->var = (uint8_t)val;
+        FloatToStr(val, str_val, 0);
+        UART_Response_DMA("$OK,%s=%s", param_name, str_val);
+        return;
+    }
+
     if (Param_WriteFloat(param, val) == 0)
     {
-        /* 特殊处理 motor_enable */
-        if (strcmp(param_name, "motor_enable") == 0)
-        {
-            if ((int)val)
-            {
-
-            }else
-            {
-
-            }
-        }
-
         FloatToStr(val, str_val, 4);
         UART_Response_DMA("$OK,%s=%s", param_name, str_val);
     }
@@ -316,9 +335,14 @@ void Protocol_CommandHandler(const ProtocolCmd_t *cmd)
     else if (str_icmp(cmd->cmd, "SET") == 0)
     {
         if (cmd->argc >= 2)
+        {
+            command_flag.data_received = 1;             //设置数据接收完成标志位
             Cmd_Set(cmd->args[0], cmd->args[1]);
+        }  
         else
+        {
             UART_Response_DMA("$ERR,usage: $SET,<param>,<value>");
+        }
     }
     else
     {

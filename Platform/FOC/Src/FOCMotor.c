@@ -134,6 +134,7 @@ void FOC_CurrentOffsetCalibration(MOTOR_DATA *motor)
     DWT_Delay_ms(1);
 }
 
+
 MOTOR_ERROR OpenControlMode(MOTOR_DATA *motor)
 {
     // float Ts = 0.00005f;
@@ -174,8 +175,8 @@ MOTOR_ERROR CurrentControl(MOTOR_DATA *motor)
     if (a == 0)
     {
         /* 初始化低通滤波器 */
-        LPF_Init(&lpf_filter_iq, 0.3f);
-        LPF_Init(&lpf_filter_id, 0.3f);
+        LPF_Init(&lpf_filter_iq, 0.8f);
+        LPF_Init(&lpf_filter_id, 0.8f);
         /* 初始化电流环q轴PID */
         PID_Init(&motor->IqPID, PID_POSITION, &motor->foc.flash_data.iq_kp,
                  MAX_V_LIMIT, MAX_I_LIMIT);
@@ -196,10 +197,10 @@ MOTOR_ERROR CurrentControl(MOTOR_DATA *motor)
     motor->foc.i_d = LPF_Calc(&lpf_filter_id, motor->foc.i_d);
 
     motor->foc.iq_set = CLAMP(motor->foc.iq_set, -MOTOR_IQ_MAX, MOTOR_IQ_MAX);
-    // motor->foc.i_q    = CLAMP(motor->foc.i_q, -MOTOR_IQ_MAX,MOTOR_IQ_MAX);
+    // motor->foc.i_q    = CLAMP(m otor->foc.i_q, -MOTOR_IQ_MAX,MOTOR_IQ_MAX);
 
-    motor->foc.v_q = PID_Calc(&motor->IqPID, motor->foc.i_q, motor->foc.iq_set);
-    motor->foc.v_d = PID_Calc(&motor->IdPID, motor->foc.i_d, motor->foc.id_set);
+    motor->foc.v_q = PID_Calc(&motor->IqPID, motor->foc.i_q, motor->foc.iq_set, 0.00005f);
+    motor->foc.v_d = PID_Calc(&motor->IdPID, motor->foc.i_d, motor->foc.id_set, 0.00005f);
 
     Inv_Park(&motor->foc);
     motor->foc.Ualpha_norm = motor->foc.v_alpha * INVBATVEL;
@@ -211,70 +212,147 @@ MOTOR_ERROR CurrentControl(MOTOR_DATA *motor)
     }
 }
 
-
 LPF_Filter_t lpf_filter_vel = {0.0f, 0.0f};
 MOTOR_ERROR VelocityControl(MOTOR_DATA *motor)
 {
     static uint8_t a = 0;
-    static int vel_Hz = 19;
 
     if (a == 0)
     {
-        LPF_Init(&lpf_filter_vel, 0.01f);
+        LPF_Init(&lpf_filter_vel, 0.8f);
         PID_Init(&motor->VelPID, PID_POSITION, &motor->foc.flash_data.vel_kp,
                  MOTOR_IQ_MAX, MOTOR_IQ_MAX * 0.6);
         a = 1;
     }
 
-    vel_Hz++;
-    if (vel_Hz > 19)
-    {
-        motor->foc.vel_fb =  -motor->mt6816->vel_estimate_; //  速度反馈值取反和力矩环方向保持一致 (rad/s)
-        motor->foc.vel_fb = LPF_Calc(&lpf_filter_vel, motor->foc.vel_fb);
-        motor->foc.vel_set = CLAMP(motor->foc.vel_set, -MAX_VEL_LIMIT,
-                                  MAX_VEL_LIMIT); //  速度设置值 (rad/s)
-        motor->foc.iq_set =
-            PID_Calc(&motor->VelPID, motor->foc.vel_fb, motor->foc.vel_set);
-        vel_Hz = 0;
-    }
-    return CurrentControl(motor);
+    motor->foc.vel_fb = -motor->mt6816->vel_estimate_; //  速度反馈值取反和力矩环方向保持一致 (rad/s)
+    motor->foc.vel_fb = LPF_Calc(&lpf_filter_vel, motor->foc.vel_fb);
+    motor->foc.vel_set = CLAMP(motor->foc.vel_set, -MAX_VEL_LIMIT,
+                               MAX_VEL_LIMIT); //  速度设置值 (rad/s)
+
+    motor->foc.iq_set =
+        PID_Calc(&motor->VelPID, motor->foc.vel_fb, motor->foc.vel_set, 0.0002f);
+    return M_OK;
 }
 
 MOTOR_ERROR PositionControl(MOTOR_DATA *motor)
 {
-    float pos_error;
     static uint8_t a = 0;
-    static int pos_Hz = 99;
     if (a == 0)
     {
         PID_Init(&motor->PosPID, PID_POSITION, &motor->foc.flash_data.pos_kp,
                  MAX_VEL_LIMIT, 0);
         a = 1;
     }
+    motor->foc.pos_fb = motor->mt6816->pos_estimate_ * 360.0f;
+    motor->foc.vel_set = PID_Calc(&motor->PosPID, motor->foc.pos_fb, motor->foc.pos_set, 0);
+    motor->foc.vel_set = -motor->foc.vel_set;
+    return M_OK;
+}
 
-    pos_Hz++;
-    if (pos_Hz > 19)
+/**
+ * @brief 梯形加减速轨迹规划器
+ *
+ * 生成从当前位置到目标位置的平滑运动轨迹，包含三个阶段：
+ * 1. 加速阶段 — 以恒定加速度加速至最大速度
+ * 2. 匀速阶段 — 以最大速度巡航
+ * 3. 减速阶段 — 以恒定加速度减速至零速，精确停于目标位置
+ *
+ * 内部维护轨迹位置和速度状态。当检测到目标位置改变时，
+ * 自动以当前反馈位置为起点重新规划轨迹。
+ *
+ * @param target  目标位置（°）
+ * @param current 当前实际反馈位置（°），仅在目标切换时用于初始化轨迹
+ * @param dt      采样时间间隔（s）
+ * @return float  轨迹规划器输出的位置参考值（°）
+ */
+float Trajectory_Update(float target, float current, float dt)
+{
+    /* 梯形加减速配置参数 */
+    static const float PROFILE_VEL = TRAPEZOID_VEL; /* 最大速度 (°/s) */
+    static const float PROFILE_ACC = TRAPEZOID_ACC; /* 加速度 (°/s²) */
+
+    /* 内部状态变量（静态，跨调用保持） */
+    static float traj_pos = 0.0f;    /* 轨迹当前输出位置 (°) */
+    static float traj_vel = 0.0f;    /* 轨迹当前速度 (°/s) */
+    static float prev_target = 0.0f; /* 上一次的目标位置，用于检测目标变更 */
+
+    float error;      /* 轨迹位置与目标位置的偏差 (°) */
+    float decel_dist; /* 从当前速度减速到零所需的最小距离 (°) */
+    float dir;        /* 运动方向：+1 正向，-1 反向 */
+
+    /* 目标位置发生改变时，重置轨迹规划器（以当前反馈位置为起点） */
+    if (fabsf(target - prev_target) > 1e-6f)
     {
-        motor->foc.pos_fb = motor->mt6816->mec_angle;           //  位置反馈
-        motor->foc.pos_set = 2.1;//motor->foc.pos_set * M_PI / 180.0f;
-        // motor->foc.pos_set = CLAMP(motor->foc.pos_set , 0.0f,
-        //                           M_2PI);               //  位置设置值
-
-        pos_error = -(motor->foc.pos_set - motor->foc.pos_fb);  
-        
-        // if(pos_error > 180.0f)
-        // {
-        //     pos_error -= 360.0f;
-        // }
-        // else if(pos_error < -180.0f)
-        // {
-        //     pos_error += 360.0f;
-        // }
-        motor->foc.vel_set =CLAMP(pos_error * motor->foc.flash_data.pos_kp,
-                                            -MAX_VEL_LIMIT,MAX_VEL_LIMIT);
-
-        // motor->foc.vel_set = PID_Calc(&motor->PosPID, motor->foc.pos_fb, motor->foc.pos_set);
-        pos_Hz = 0;
+        traj_pos = current;
+        traj_vel = 0.0f;
+        prev_target = target;
     }
-    return VelocityControl(motor);
+
+    /* 计算剩余运动距离 */
+    error = target - traj_pos;
+
+    /* 若已到达目标位置附近，直接停止并返回目标值 */
+    if (fabsf(error) <= 0.01f)
+    {
+        traj_pos = target;
+        traj_vel = 0.0f;
+        return target;
+    }
+
+    /* 确定运动方向 */
+    dir = (error > 0.0f) ? 1.0f : -1.0f;
+
+    /*
+     * 计算从当前速度减速到零所需的最小距离：
+     *   decel_dist = |v|² / (2 * a)
+     * 若剩余距离小于该值，必须立即开始减速，否则会过冲。
+     */
+    decel_dist = (traj_vel * traj_vel) / (2.0f * PROFILE_ACC);
+
+    if (fabsf(error) <= decel_dist)
+    {
+        /*
+         * 减速阶段：以最大减速度减速
+         * 速度方向与运动方向相同时减速，反向时已过零则保持零速
+         */
+        traj_vel -= dir * PROFILE_ACC * dt;
+
+        /* 防止速度越过零而反向运动 */
+        if (traj_vel * dir <= 0.0f)
+        {
+            traj_vel = 0.0f;
+        }
+    }
+    else if (fabsf(traj_vel) < PROFILE_VEL)
+    {
+        /*
+         * 加速阶段：以最大加速度加速至最大速度
+         * 每周期增加速度，达到 PROFILE_VEL 后进入匀速阶段
+         */
+        traj_vel += dir * PROFILE_ACC * dt;
+
+        /* 限幅至最大速度 */
+        if (fabsf(traj_vel) > PROFILE_VEL)
+        {
+            traj_vel = dir * PROFILE_VEL;
+        }
+    }
+    /* 匀速阶段：保持当前速度不变，由 else 分支隐式处理 */
+
+    /* 根据当前速度更新轨迹位置 */
+    traj_pos += traj_vel * dt;
+
+    /*
+     * 防过冲处理：若更新后的位置已越过目标，
+     * 则将位置钳位到目标值并将速度置零
+     */
+    if ((error > 0.0f && traj_pos >= target) ||
+        (error < 0.0f && traj_pos <= target))
+    {
+        traj_pos = target;
+        traj_vel = 0.0f;
+    }
+
+    return traj_pos;
 }

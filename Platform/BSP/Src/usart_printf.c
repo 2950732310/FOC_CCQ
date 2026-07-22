@@ -273,7 +273,10 @@ void UART_ProtocolProcess(void)
                 if (Protocol_ParseLine(rx_line, &cmd) == 0)
                 {
                     if (protocol_callback != NULL)
+                    {
                         protocol_callback(&cmd);
+                    }
+                       
                 }
                 else
                 {

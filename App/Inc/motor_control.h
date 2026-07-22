@@ -25,10 +25,11 @@ typedef enum
 /* 电机闭环类型枚举 */
 typedef enum
 {
-    CONTROL_MODE_OPEN = 0,          // 开环控制模式
-    CONTROL_MODE_TORQUE = 1,        // 力矩闭环控制模式
-    CONTROL_MODE_VELOCITY = 2,      // 速度闭环控制模式
-    CONTROL_MODE_POSITION = 3,      // 位置闭环控制模式
+    CONTROL_MODE_OPEN = 0,              // 开环控制模式
+    CONTROL_MODE_TORQUE = 1,            // 力矩闭环控制模式 
+    CONTROL_MODE_VELOCITY = 2,          // 速度闭环控制模式
+    CONTROL_MODE_POSITION = 3,          // 位置闭环控制模式
+    CONTROL_MODE_GRADIENT_POSITION = 4, // 梯度位置闭环控制模式
 } CONTROL_MODE;
 
 typedef struct

@@ -31,7 +31,7 @@
 #define MT6816_Over_Speed_Reg (0x80 | 0x05) // 获取超速信息寄存器地址
 
 // 常量定义
-#define ENCODER_PLL_BANDWIDTH 200.0f
+#define ENCODER_PLL_BANDWIDTH 800.0f
 #define ENCODER_CPR 16384u                  // 编码器分辨率u
 #define ENCODER_CPR_F 16384.0f              // 编码器分辨率f
 #define ENCODER_CPR_DIV (ENCODER_CPR >> 1)

@@ -4,9 +4,6 @@
 #include "general_def.h" // 包含通用定义的头文件
 
 
-#define I_TS  				0.00005f      				                        // 积分时间步长
-
-
 enum PID_MODE
 {
   PID_POSITION = 0, // 位置式
@@ -55,7 +52,7 @@ extern void PID_Init(PidTypeDef *pid, uint8_t mode, const float PID[3], float ma
  * @param[in]      set: 设定值
  * @retval         PID输出值
  */
-extern float PID_Calc(PidTypeDef *pid, float ref, float set);
+extern float PID_Calc(PidTypeDef *pid, float ref, float set,float I_TS);
 
 /**
  * @brief          PID输出清除
