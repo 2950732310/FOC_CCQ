@@ -1,0 +1,15 @@
+C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/CMakeFiles/FOC_CCQ.dir
+C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/CMakeFiles/edit_cache.dir
+C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/CMakeFiles/rebuild_cache.dir
+C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir
+C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/cmake/stm32cubemx/CMakeFiles/edit_cache.dir
+C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/cmake/stm32cubemx/CMakeFiles/rebuild_cache.dir
+C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/Platform/BSP/CMakeFiles/bsp_lib.dir
+C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/Platform/BSP/CMakeFiles/edit_cache.dir
+C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/Platform/BSP/CMakeFiles/rebuild_cache.dir
+C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/Platform/FOC/CMakeFiles/foc_lib.dir
+C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/Platform/FOC/CMakeFiles/edit_cache.dir
+C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/Platform/FOC/CMakeFiles/rebuild_cache.dir
+C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/App/CMakeFiles/app_lib.dir
+C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/App/CMakeFiles/edit_cache.dir
+C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/App/CMakeFiles/rebuild_cache.dir

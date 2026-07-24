@@ -1,0 +1,181 @@
+{
+	"configurations" : 
+	[
+		{
+			"abstractTargets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "stm32cubemx::@768a070a0fe75716b479",
+					"jsonFile" : "target-stm32cubemx-Debug-69533e2fad8253d67668.json",
+					"name" : "stm32cubemx",
+					"projectIndex" : 0
+				}
+			],
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4
+					],
+					"jsonFile" : "directory-.-Debug-f6f22219c74102c3da70.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.22"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"abstractTargetIndexes" : 
+					[
+						0
+					],
+					"build" : "cmake/stm32cubemx",
+					"jsonFile" : "directory-cmake.stm32cubemx-Debug-8f353d194551f741f997.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.22"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "cmake/stm32cubemx",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "Platform/BSP",
+					"jsonFile" : "directory-Platform.BSP-Debug-e11ded93edacdffc40ae.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.22"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "Platform/BSP",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"build" : "Platform/FOC",
+					"jsonFile" : "directory-Platform.FOC-Debug-faf27a44429e0b447cd8.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.22"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "Platform/FOC",
+					"targetIndexes" : 
+					[
+						4
+					]
+				},
+				{
+					"build" : "App",
+					"jsonFile" : "directory-App-Debug-cb9bd7abf74bffa11319.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.22"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "App",
+					"targetIndexes" : 
+					[
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"abstractTargetIndexes" : 
+					[
+						0
+					],
+					"directoryIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					],
+					"name" : "FOC_CCQ",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "FOC_CCQ::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-FOC_CCQ-Debug-8494be2077e2905a6db0.json",
+					"name" : "FOC_CCQ",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "STM32_Drivers::@768a070a0fe75716b479",
+					"jsonFile" : "target-STM32_Drivers-Debug-3b229231ce7dbe53e36d.json",
+					"name" : "STM32_Drivers",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 4,
+					"id" : "app_lib::@4cec9bfdf5c218c89c51",
+					"jsonFile" : "target-app_lib-Debug-e60bb7b11236b3464cd7.json",
+					"name" : "app_lib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 2,
+					"id" : "bsp_lib::@c71faea44ab60ba0cc2a",
+					"jsonFile" : "target-bsp_lib-Debug-ca970efe4c318407100d.json",
+					"name" : "bsp_lib",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 3,
+					"id" : "foc_lib::@2daa88d9baa478eff901",
+					"jsonFile" : "target-foc_lib-Debug-46e1249d259ece13a7c5.json",
+					"name" : "foc_lib",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/ccq/Desktop/FOC_CCQ/build/Debug",
+		"source" : "C:/Users/ccq/Desktop/FOC_CCQ"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 9
+	}
+}

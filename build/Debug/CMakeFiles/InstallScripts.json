@@ -1,0 +1,11 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/cmake_install.cmake",
+		"C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/cmake/stm32cubemx/cmake_install.cmake",
+		"C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/Platform/BSP/cmake_install.cmake",
+		"C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/Platform/FOC/cmake_install.cmake",
+		"C:/Users/ccq/Desktop/FOC_CCQ/build/Debug/App/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
